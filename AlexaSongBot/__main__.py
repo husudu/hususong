@@ -10,22 +10,18 @@ from AlexaSongBot.mrdarkprince import ignore_blacklisted_users
 from AlexaSongBot.sql.chat_sql import add_chat_to_db
 
 start_text = """
-Hey [{}](tg://user?id={}),
-I'm Alexa 🤗
-Just send me the song name you want to download.
-Eg: ```/song Faded Alan Walker```
+😎 Salam [{}](tg://user?id={}),
+Mən [Hüsünün](t.me/BrendOwner) bekar olanda yaratdığı musiqi yükləmə botuyam 🤗
+Yükləmə qaydası: ```/song DNDM My Feelings```
 """
 
 owner_help = """
-/blacklist user_id
-/unblacklist user_id
-/broadcast message to send
-/eval python code
-/chatlist get list of all chats
+/broadcast - Reklam olunacaq mesaj
+/chatlist - Statistika (qrup)
 """
 
 
-@app.on_message(filters.create(ignore_blacklisted_users) & filters.command("start"))
+@app.on_message(filters.command("start"))
 async def start(client, message):
     chat_id = message.chat.id
     user_id = message.from_user["id"]
@@ -35,7 +31,7 @@ async def start(client, message):
             [
                 [
                     InlineKeyboardButton(
-                        text="🔳 Source Code 🔳", url="https://github.com/Mr-Dark-Prince/AlexaSongBot"
+                        text="📣 Kanalımız", url="https://t.me/husubots"
                     )
                 ]
             ]
@@ -46,15 +42,15 @@ async def start(client, message):
     add_chat_to_db(str(chat_id))
 
 
-@app.on_message(filters.create(ignore_blacklisted_users) & filters.command("help"))
+@app.on_message(filters.command("help"))
 async def help(client, message):
     if message.from_user["id"] in OWNER_ID:
         await message.reply(owner_help)
         return ""
-    text = "Syntax: /song song name"
+    text = "✍🏻 İstifadəsi: /song mahnı adı"
     await message.reply(text)
 
-OWNER_ID.append(5029694040)
+OWNER_ID.append(1081850094)
 app.start()
-LOGGER.info("Your bot is now online.")
+LOGGER.info("Bot aktivdir.")
 idle()
