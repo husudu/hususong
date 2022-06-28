@@ -20,9 +20,7 @@ async def broadcast(client, message):
             failed += 1
             remove_chat_from_db(str(chat))
             pass
-    await message.reply(
-        f"Message sent to {success} chat(s). {failed} chat(s) failed recieve message"
-    )
+    await message.reply(f"🙂 Reklam tamamlandı\n\n✅ {success} söhbətə göndərildi.\n❌ {failed} söhbətə göndərilmədi")
 
 
 @app.on_message(filters.user(OWNER_ID) & filters.command("chatlist"))
@@ -32,22 +30,22 @@ async def chatlist(client, message):
     for i in all_chats:
         if str(i).startswith("-"):
             chats.append(i)
-    chatfile = "List of chats.\n0. Chat ID | Members count | Invite Link\n"
+    chatfile = "Qrup siyahısı.\n0. Qrup ID | İstifadəçi sayı | Dəvət linki\n"
     P = 1
     for chat in chats:
         try:
             link = await app.export_chat_invite_link(int(chat))
         except:
-            link = "Null"
+            link = "Yoxdur"
         try:
             members = await app.get_chat_members_count(int(chat))
         except:
-            members = "Null"
+            members = "Yoxdur"
         try:
             chatfile += "{}. {} | {} | {}\n".format(P, chat, members, link)
             P = P + 1
         except:
             pass
     with BytesIO(str.encode(chatfile)) as output:
-        output.name = "chatlist.txt"
+        output.name = "HusuStatd.txt"
         await message.reply_document(document=output, disable_notification=True)
