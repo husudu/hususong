@@ -5,7 +5,7 @@ from pytube import YouTube
 from pyrogram.types import InlineKeyboardMarkup
 from pyrogram.types import InlineKeyboardButton
 from youtubesearchpython import VideosSearch
-from AlexaSongBot.mrdarkprince import ignore_blacklisted_users, get_arg
+from AlexaSongBot.mrdarkprince import get_arg
 from AlexaSongBot import app, LOGGER
 from AlexaSongBot.sql.chat_sql import add_chat_to_db
 
@@ -21,26 +21,26 @@ def yt_search(song):
         return url
 
 
-@app.on_message(filters.create(ignore_blacklisted_users) & filters.command("song"))
+@app.on_message(filters.command("song"))
 async def song(client, message):
     chat_id = message.chat.id
     user_id = message.from_user["id"]
     add_chat_to_db(str(chat_id))
     args = get_arg(message) + " " + "song"
     if args.startswith(" "):
-        await message.reply("Enter a song name. Check /help")
+        await message.reply("🆙 Mahnı adı daxil edin")
         return ""
-    status = await message.reply("🔎Searching song from YouTube 📺.. Please wait some time ⏳️ © @Mr_Dark_Prince ")
+    status = await message.reply("🔎 Axtarıram... ")
     video_link = yt_search(args)
     if not video_link:
-        await status.edit("😔Song not found.")
+        await status.edit("😔 Mahnı tapılmadı.")
         return ""
     yt = YouTube(video_link)
     audio = yt.streams.filter(only_audio=True).first()
     try:
         download = audio.download(filename=f"{str(user_id)}")
     except Exception as ex:
-        await status.edit("Failed to download song")
+        await status.edit("Xəta baş verdi")
         LOGGER.error(ex)
         return ""
     rename = os.rename(download, f"{str(user_id)}.mp3")
@@ -50,7 +50,7 @@ async def song(client, message):
         audio=f"{str(user_id)}.mp3",
         duration=int(yt.length),
         title=str(yt.title),
-        performer=str(yt.author),
+        performer=str("Hüsü"),
         reply_to_message_id=message.message_id,
     )
     await status.delete()
