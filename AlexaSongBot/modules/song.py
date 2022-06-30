@@ -30,28 +30,25 @@ async def song(client, message):
     if args.startswith(" "):
         await message.reply("🆙 Mahnı adı daxil edin")
         return ""
-    status = await message.reply("🔎 Axtarıram... ")
     video_link = yt_search(args)
     if not video_link:
-        await status.edit("😔 Mahnı tapılmadı.")
+        await message.reply("😔 Mahnı tapılmadı.")
         return ""
     yt = YouTube(video_link)
     audio = yt.streams.filter(only_audio=True).first()
     try:
         download = audio.download(filename=f"{str(user_id)}")
     except Exception as ex:
-        await status.edit("Xəta baş verdi")
+        await message.reply("Xəta baş verdi")
         LOGGER.error(ex)
         return ""
-    rename = os.rename(download, f"{str(user_id)}.mp3")
-    await app.send_chat_action(message.chat.id, "upload_audio")
+    rename = os.rename(download, f"{str(user_id)}.m4a")
     await app.send_audio(
         chat_id=message.chat.id,
-        audio=f"{str(user_id)}.mp3",
+        audio=f"{str(user_id)}.m4a",
         duration=int(yt.length),
         title=str(yt.title),
         performer=str("Hüsü"),
         reply_to_message_id=message.message_id,
     )
-    await status.delete()
-    os.remove(f"{str(user_id)}.mp3")
+    os.remove(f"{str(user_id)}.m4a")
