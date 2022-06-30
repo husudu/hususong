@@ -1,4 +1,4 @@
-pyrogram
+pyrogram==1.1.2
 tgcrypto
 pytube
 sqlalchemy==1.3.23
