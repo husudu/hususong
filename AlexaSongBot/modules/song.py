@@ -39,13 +39,12 @@ async def song(Client, message):
         await message.reply("Xəta baş verdi")
         LOGGER.error(ex)
         return ""
-    rename = os.rename(download, f"{str(user_id)}.m4a")
+    rename = os.rename(download, f"{str(user_id)}.mp3")
     await app.send_audio(
         chat_id=message.chat.id,
         audio=f"{str(user_id)}.mp3",
         duration=int(yt.length),
         title=str(yt.title),
-        performer=str("Hüsü"),
-        reply_to_message_id=message.message_id,
+        performer=str("Hüsü")
     )
     os.remove(f"{str(user_id)}.mp3")
