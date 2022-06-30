@@ -22,8 +22,8 @@ owner_help = """
 @app.on_message(filters.command("start"))
 async def start(client, message):
     chat_id = message.chat.id
-    user_id = message.from_user["id"]
-    name = message.from_user["first_name"]
+    user_id = message.from_user.id
+    name = message.from_user.first_name
     if message.chat.type == "private":
         btn = InlineKeyboardMarkup(
             [
@@ -42,7 +42,7 @@ async def start(client, message):
 
 @app.on_message(filters.command("help"))
 async def help(client, message):
-    if message.from_user["id"] in OWNER_ID:
+    if message.from_user.id in OWNER_ID:
         await message.reply(owner_help)
         return ""
     text = "✍🏻 İstifadəsi: /song mahnı adı"
