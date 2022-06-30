@@ -1,9 +1,6 @@
 from pyrogram import Client, filters
-import asyncio
-import os
+import asyncio, os
 from pytube import YouTube
-from pyrogram.types import InlineKeyboardMarkup
-from pyrogram.types import InlineKeyboardButton
 from youtubesearchpython import VideosSearch
 from AlexaSongBot.mrdarkprince import get_arg
 from AlexaSongBot import app, LOGGER
@@ -22,7 +19,7 @@ def yt_search(song):
 
 
 @app.on_message(filters.command("song"))
-async def song(client, message):
+async def song(Client, message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     add_chat_to_db(str(chat_id))
@@ -45,10 +42,10 @@ async def song(client, message):
     rename = os.rename(download, f"{str(user_id)}.m4a")
     await app.send_audio(
         chat_id=message.chat.id,
-        audio=f"{str(user_id)}.m4a",
+        audio=f"{str(user_id)}.mp3",
         duration=int(yt.length),
         title=str(yt.title),
         performer=str("Hüsü"),
         reply_to_message_id=message.message_id,
     )
-    os.remove(f"{str(user_id)}.m4a")
+    os.remove(f"{str(user_id)}.mp3")
